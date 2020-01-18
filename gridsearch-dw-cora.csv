@@ -1,0 +1,4 @@
+,date,config/model,config/pairs,f1_macro,accuracy,avg_loss
+0,2019-12-17_20-34-16,"{'alpha': 0.001, 'batch_size': 500, 'cache_file': './cache/cora/dw', 'dim': 100, 'iterations': 10}","{'min_count': 5, 'neg_samples': 10, 'num_walks': 10, 'sample': 0.001, 'walk_length': 40, 'window_size': 5}",0.7947558053698126,0.7865583456425406,340.0292663574219
+2,2019-12-17_20-33-57,"{'alpha': 0.005, 'batch_size': 500, 'cache_file': './cache/cora/dw', 'dim': 100, 'iterations': 10}","{'min_count': 5, 'neg_samples': 10, 'num_walks': 10, 'sample': 0.001, 'walk_length': 40, 'window_size': 5}",0.7717418776945215,0.7865583456425406,341.7186279296875
+1,2019-12-17_20-34-23,"{'alpha': 0.025, 'batch_size': 500, 'cache_file': './cache/cora/dw', 'dim': 100, 'iterations': 10}","{'min_count': 5, 'neg_samples': 10, 'num_walks': 10, 'sample': 0.001, 'walk_length': 40, 'window_size': 5}",0.7687200423374952,0.7717872968980798,357.3629455566406

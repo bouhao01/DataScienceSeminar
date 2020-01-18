@@ -1,0 +1,4 @@
+,date,config/model,config/pairs,f1_macro,accuracy,avg_loss
+0,2019-12-17_19-40-31,"{'alpha': 0.001, 'batch_size': 4, 'dim': 100, 'iterations': 10}","{'min_count': 5, 'neg_samples': 10, 'sample': 0}",0.6999607152385761,0.7355982274741507,5.962936401367188
+2,2019-12-17_19-40-44,"{'alpha': 0.005, 'batch_size': 4, 'dim': 100, 'iterations': 10}","{'min_count': 5, 'neg_samples': 10, 'sample': 0}",0.6445104596424731,0.6846381093057607,4.158778190612793
+1,2019-12-17_19-40-41,"{'alpha': 0.025, 'batch_size': 4, 'dim': 100, 'iterations': 10}","{'min_count': 5, 'neg_samples': 10, 'sample': 0}",0.5644075471753439,0.6056129985228951,15.550031661987305
