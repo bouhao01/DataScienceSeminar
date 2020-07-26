@@ -1,0 +1,127 @@
+{
+"cora" : {
+    "d2v" : {
+        "pairs": {
+            "neg_samples": 10,
+            "sample": 0,
+            "min_count": 5
+        },
+        "model": {
+            "dim": 100,
+            "alpha": 0.001,
+            "iterations": 10,
+            "batch_size": 4,
+            "cache_file": "./cache/cora/d2v"
+        }
+    },
+    "dw" : {
+        "pairs": {
+            "neg_samples": 10,
+            "sample": 0.001,
+            "min_count": 5,
+            "walk_length": 40,
+            "num_walks": 10,
+            "window_size": 5
+        },
+        "model": {
+            "dim": 100,
+            "alpha": 0.001,
+            "iterations": 10,
+            "batch_size": 500,
+            "cache_file": "./cache/cora/dw"
+        }
+    },
+    "sine" : {
+        "dim": 100,
+        "alpha": 0.001,
+        "iterations": 10,
+        "batch_sizes": "",
+        "cache_file": "./cache/cora/jce_sine"
+    }
+},
+
+"citeseer" : {
+    "d2v" : {
+       "pairs": {
+           "neg_samples": 10,
+           "sample": 0,
+           "min_count": 5
+       },
+       "model": {
+           "dim": 100,
+           "alpha": 0.001,
+           "iterations": 10,
+           "batch_size": 4,
+           "cache_file": "./cache/citeseer/d2v"
+       }
+    },
+    "dw" : {
+       "pairs": {
+           "neg_samples": 10,
+           "sample": 0.001,
+           "min_count": 5,
+           "walk_length": 40,
+           "num_walks": 10,
+           "window_size": 5
+       },
+       "model": {
+           "dim": 100,
+           "alpha": 0.001,
+           "iterations": 10,
+           "batch_size": 500,
+           "cache_file": "./cache/citeseer/dw"
+       }
+    },
+    "sine" : {
+        "dim": 100,
+        "alpha": 0.001,
+        "iterations": 10,
+        "batch_sizes": "",
+        "cache_file": "./cache/citeseer/jce_sine"
+    }
+},
+
+"dblp" : {
+    "d2v" : {
+       "pairs": {
+           "neg_samples": 10,
+           "sample": 0,
+           "min_count": 5
+       },
+       "model": {
+           "workers": 0,
+           "dim": 100,
+           "alpha": 0.001,
+           "iterations": 10,
+           "batch_size": 16,
+           "cache_file": "./cache/dblp/d2v"
+       }
+    },
+    "dw" : {
+       "pairs": {
+           "neg_samples": 10,
+           "sample": 0.001,
+           "min_count": 5,
+           "walk_length": 40,
+           "num_walks": 10,
+           "window_size": 5
+       },
+       "model": {
+           "workers": 0,
+           "dim": 100,
+           "alpha": 0.001,
+           "iterations": 10,
+           "batch_size": 2000,
+           "cache_file": "./cache/dblp/dw"
+       }
+    },
+    "sine" : {
+        "workers": 0,
+        "dim": 100,
+        "alpha": 0.001,
+        "iterations": 10,
+        "batch_sizes": "",
+        "cache_file": "./cache/dblp/jce_sine"
+    }
+}
+}

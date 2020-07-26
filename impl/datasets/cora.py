@@ -3,6 +3,7 @@ from gensim.models.doc2vec import TaggedDocument
 import networkx as nx
 from tqdm import tqdm
 import impl.utils.config as config
+import random
 
 
 class CORA(Dataset):
@@ -12,6 +13,7 @@ class CORA(Dataset):
         self.cites_file = cites_filename
         self.prepare_idx()
         self.prepare_tagged_docs()
+        self.network = nx.read_edgelist(self.cites_file)
 
     def prepare_idx(self):
         for paper_id, words_one_hot, class_label in self.get_content():
@@ -54,4 +56,79 @@ class CORA(Dataset):
                 yield paper_id, words_one_hot, class_label
 
     def get_network(self):
-        return nx.read_edgelist(self.cites_file)
+        return self.network
+
+
+    def remove_random_edges(self, edges_percentage=5):
+        number_of_edges_to_be_removed = int(edges_percentage*len(self.network.edges())/100)
+        edges_to_be_removed = random.sample(self.network.edges(), number_of_edges_to_be_removed)
+
+        self.network.remove_edges_from(edges_to_be_removed)
+        print("Removed edges = {}".format(len(edges_to_be_removed)))
+
+    def remove_iportant_edges_cc(self, edges_percentage=5):
+        # Important edges with in relation with connected component only
+        self.remove_iportant_edges(edges_percentage=edges_percentage, alpha=0.0, beta=1.0)
+
+    def remove_iportant_edges_nd(self, edges_percentage=5):
+        # Important edges with in relation with node degree only
+        self.remove_iportant_edges(edges_percentage=edges_percentage, alpha=1.0, beta=0.0)
+
+    def remove_iportant_edges(self, edges_percentage, alpha=0.4, beta=0.6):
+        # Important edges are defined to be connected with nodes which have the less neighbors
+
+        number_of_edges_to_be_removed = int(edges_percentage*len(self.network.edges())/100)
+
+        edges_score = []
+
+        initial_network_connected_components = nx.number_connected_components(self.network)
+
+        for e in self.network.edges():
+            edge_score_from_nodes = abs(self.network.degree(e[0]) - self.network.degree(e[1]))
+
+            self.network.remove_edge(*e)
+            edge_score_from_connected_components = nx.number_connected_components(self.network) - initial_network_connected_components
+            self.network.add_edge(*e)
+
+            edges_score.append((e, (alpha*edge_score_from_nodes + beta*edge_score_from_connected_components)))
+
+        sorted(edges_score,  key=lambda x: x[1], reverse=True)
+        edges_to_be_removed = [edge for edge, edges_score in edges_score[:number_of_edges_to_be_removed]]
+        self.network.remove_edges_from(edges_to_be_removed)
+        print("Removed edges = {}".format(len(edges_to_be_removed)))
+
+
+    def remove_all_edges_of_random_nodes(self, edges_percentage=5):
+        number_of_edges_to_be_removed = int(edges_percentage*len(self.network.edges())/100)
+
+        nodes_to_apply_edges_delete = random.sample(self.network.nodes(), len(self.network.nodes()))
+
+        # Delete edges
+        removed_edges = 0
+        for node in nodes_to_apply_edges_delete:
+            node_edges = list(self.network.edges(node))
+            self.network.remove_edges_from(node_edges)
+            removed_edges += len(node_edges)
+            if removed_edges >= number_of_edges_to_be_removed:
+                break
+        print("Removed edges = {}".format(removed_edges))
+
+    def remove_all_edges_of_important_nodes(self, edges_percentage=5):
+        # Important nodes are defined to have many neighbors
+        number_of_edges_to_be_removed = int(edges_percentage*len(self.network.edges())/100)
+        nodes_degree = [(node,self.network.degree(node)) for node in self.network.nodes()]
+        # nodes_centrality = [(node,v) for node,v in nx.degree_centrality(network_citeseer).items()]
+
+        nodes_degree = sorted(nodes_degree,  key=lambda x: x[1], reverse=True)
+        # nodes_centrality = sorted(nodes_centrality,  key=lambda x: x[1], reverse=True)
+
+        # Delete edges
+        removed_edges = 0
+        for node, degree in nodes_degree:
+            node_edges = list(self.network.edges(node))
+            self.network.remove_edges_from(node_edges)
+            removed_edges += len(node_edges)
+            if removed_edges >= number_of_edges_to_be_removed:
+                break
+
+        print("Removed edges = {}".format(removed_edges))
