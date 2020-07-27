@@ -62,6 +62,8 @@ def init(args):
         print("Ex: python generate_embeddings cora 5 10 50")
         return False
 
+    params["sine"]["batch_sizes"] = [params["d2v"]["model"]["batch_size"], params["dw"]["model"]["batch_size"]]
+
     for drop in args[1:]:
         drop_percentages.append(int(drop))
 

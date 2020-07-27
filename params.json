@@ -35,7 +35,7 @@
         "dim": 100,
         "alpha": 0.001,
         "iterations": 10,
-        "batch_sizes": "",
+        "batch_sizes": [],
         "cache_file": "./cache/cora/jce_sine"
     }
 },
@@ -76,7 +76,7 @@
         "dim": 100,
         "alpha": 0.001,
         "iterations": 10,
-        "batch_sizes": "",
+        "batch_sizes": [],
         "cache_file": "./cache/citeseer/jce_sine"
     }
 },
@@ -120,7 +120,7 @@
         "dim": 100,
         "alpha": 0.001,
         "iterations": 10,
-        "batch_sizes": "",
+        "batch_sizes": [],
         "cache_file": "./cache/dblp/jce_sine"
     }
 }

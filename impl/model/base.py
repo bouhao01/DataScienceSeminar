@@ -60,10 +60,6 @@ class NetworkBase():
         return True
 
     def save_cache(self):
-        if not self.cache:
-            return
-        if os.path.exists(self.cache_file):
-            os.remove(self.cache_file)
         print("Saving embeddings to cache...")
         torch.save((self.embeddings, self.losses), self.cache_file)
 
