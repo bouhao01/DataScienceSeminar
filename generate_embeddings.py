@@ -1,13 +1,15 @@
 from impl.datasets.cora import CORA
+from impl.datasets.citeseer import Citeseer
+from impl.datasets.dblp import DBLP
 from impl.pairs.doc2vec import D2VPairs
 from impl.pairs.deepwalk import DWPairs
 from impl.model.skipgram import SGNS
 from impl.model.jce import JCE
 from impl.utils.eval import eval_model, plot_evals
+
 from gensim.models import Word2Vec, doc2vec
 import numpy as np
 import psutil
-
 import os
 import datetime
 import pickle
@@ -15,8 +17,9 @@ import sys
 import json
 import copy
 
-enable_cache = False
-enable_figures_show = False
+
+
+
 
 
 params = None
@@ -31,6 +34,8 @@ test_cases = [    "remove_random_edges"
 starting_run_date = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M")
 BASE_CACHE_DIR = ""
 TIMESTAMP_CACHE_DIR = ""
+
+
 
 def init(args):
     global params, drop_percentages, BASE_CACHE_DIR, TIMESTAMP_CACHE_DIR, complete_dataset
@@ -57,7 +62,7 @@ def init(args):
         print("Ex: python generate_embeddings cora 5 10 50")
         return False
 
-    for drop in args[2:]:
+    for drop in args[1:]:
         drop_percentages.append(int(drop))
 
     BASE_CACHE_DIR = "./cache/{}".format(args[0])
@@ -73,16 +78,20 @@ def init(args):
 def main():
 
     for drop_percentage in drop_percentages:
-
         os.system("mkdir {}/{} 2> /dev/null".format(TIMESTAMP_CACHE_DIR, drop_percentage))
-        for test in test_cases:
-            print("Performing test {} with drop_percentage= {}".format(test, drop_percentage))
-
+        if 0 == drop_percentage:
+            # run on Full dataset
+            test_to_be_run = ["full_dataset"]
+        else :
+            test_to_be_run = test_cases
+        for test in test_to_be_run:
+            print("Performing test {} with drop_percentage = {}".format(test, drop_percentage))
             dataset = copy.copy(complete_dataset)
-
-            print("Removing process ...")
-            remove_method = getattr(dataset, test)
-            remove_method(drop_percentage)
+            # do not perform any edge removal when running on full dataset
+            if "full_dataset" != test:
+                print("Removing process ...")
+                remove_method = getattr(dataset, test)
+                remove_method(drop_percentage)
 
             os.system("mkdir {}/{}/{} 2> /dev/null".format(TIMESTAMP_CACHE_DIR, drop_percentage, test))
             cache_dir = "{}/{}/{}".format(TIMESTAMP_CACHE_DIR, drop_percentage, test)
@@ -109,7 +118,7 @@ def main():
             print("Running Doc2Vec ...")
             d2vmodel = SGNS(d2vpairs, **params["d2v"]["model"])
             d2vEmb = d2vmodel.embeddings[str(params["d2v"]["model"]["iterations"])]
-            print("Eval D2V: ", eval_model(d2vemb, dataset=dataset))
+            print("Eval D2V: ", eval_model(d2vEmb, dataset=dataset))
 
             #############################################
             # DeepWalk
@@ -117,14 +126,15 @@ def main():
             print("Running DeepWalk ...")
             dwmodel = SGNS(dwpairs, **params["dw"]["model"])
             dwEmb = dwmodel.embeddings[str(params["dw"]["model"]["iterations"])]
-            print("Eval DW: ", eval_model(dwemb, dataset=dataset))
+            print("Eval DW: ", eval_model(dwEmb, dataset=dataset))
 
             #############################################
             # SINE
             #############################################
             print("Running SINE ...")
-            sineEmb = JCE(data=[d2vpairs, dwpairs], disable_grad=False, **params["sine"])
-            print("Eval JCE (SINE): ", eval_model(sineEmb.embeddings[str(params["sine"]["iterations"])], dataset=dataset))
+            sinemodel = JCE(data=[d2vpairs, dwpairs], disable_grad=False, **params["sine"])
+            sineEmb = sinemodel.embeddings[str(params["sine"]["iterations"])]
+            print("Eval JCE (SINE): ", eval_model(sineEmb, dataset=dataset))
 
 if __name__ == '__main__':
     if init(sys.argv[1:]):
