@@ -117,10 +117,8 @@ class CORA(Dataset):
         # Important nodes are defined to have many neighbors
         number_of_edges_to_be_removed = int(edges_percentage*len(self.network.edges())/100)
         nodes_degree = [(node,self.network.degree(node)) for node in self.network.nodes()]
-        # nodes_centrality = [(node,v) for node,v in nx.degree_centrality(network_citeseer).items()]
 
         nodes_degree = sorted(nodes_degree,  key=lambda x: x[1], reverse=True)
-        # nodes_centrality = sorted(nodes_centrality,  key=lambda x: x[1], reverse=True)
 
         # Delete edges
         removed_edges = 0

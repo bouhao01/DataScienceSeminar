@@ -88,7 +88,7 @@ def main():
             test_to_be_run = test_cases
         for test in test_to_be_run:
             print("Performing test {} with drop_percentage = {}".format(test, drop_percentage))
-            dataset = copy.copy(complete_dataset)
+            dataset = copy.deepcopy(complete_dataset)
             # do not perform any edge removal when running on full dataset
             if "full_dataset" != test:
                 print("Removing process ...")
