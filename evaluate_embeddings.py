@@ -20,7 +20,7 @@ import torch
 
 
 
-def eval_model(model, dataset, folds=20, test_size=0.5):
+def eval_model(model, dataset, folds=10, test_size=0.5):
     X = []
     y = []
     macro_f1_scores = []
@@ -49,7 +49,9 @@ def eval_model(model, dataset, folds=20, test_size=0.5):
         precision_scores.append(precision_score)
         accuracies.append(accuracy)
 
-    return [np.mean(macro_f1_scores), np.mean(precision_scores), np.mean(accuracies)]
+    return [[np.mean(macro_f1_scores), np.std(macro_f1_scores)],
+            [np.mean(precision_scores), np.std(precision_scores)],
+            [np.mean(accuracies), np.std(accuracies)]]
 
 def main(args):
     if 1 != len(args):
@@ -106,13 +108,15 @@ def main(args):
             "#  {} with drop of {}".format(test['test_name'], test['drop']) + "\n" \
             "###################################################################################\n\n" \
             "-----------------------------------------------------------------------------------\n" \
-            "|             |    macro_f1_score    |    precision_score    |      accuracy      |" + "\n" \
+            "|             |    macro_f1_score   |    precision_score   |      accuracy       |" + "\n" \
             "-----------------------------------------------------------------------------------\n" \
-            "|  Doc2Vec    |        {:.5f}       |        {:.5f}        |       {:.5f}      |".format(*d2v_evaluation) + "\n" \
+            "|             |   AVG    |   STD    |   AVG    |   STD     |   AVG    |   STD    |" + "\n" \
             "-----------------------------------------------------------------------------------\n" \
-            "|  DeepWalk   |        {:.5f}       |        {:.5f}        |       {:.5f}      |".format(*dw_evaluation) + "\n" \
+            "|  Doc2Vec    |  {:.4f}  |  {:.4f}  |  {:.4f}  |  {:.4f}   |  {:.4f}  |  {:.4f}  |".format(*d2v_evaluation[0], *d2v_evaluation[1], *d2v_evaluation[2]) + "\n" \
             "-----------------------------------------------------------------------------------\n" \
-            "|  SINE       |        {:.5f}       |        {:.5f}        |       {:.5f}      |".format(*sin_evaluation) + "\n" \
+            "|  DeepWalk   |  {:.4f}  |  {:.4f}  |  {:.4f}  |  {:.4f}   |  {:.4f}  |  {:.4f}  |".format(*dw_evaluation[0], *dw_evaluation[1], *dw_evaluation[2]) + "\n" \
+            "-----------------------------------------------------------------------------------\n" \
+            "|  SINE       |  {:.4f}  |  {:.4f}  |  {:.4f}  |  {:.4f}   |  {:.4f}  |  {:.4f}  |".format(*sin_evaluation[0], *sin_evaluation[1], *sin_evaluation[2]) + "\n" \
             "-----------------------------------------------------------------------------------\n" \
 
             test_result = open(test['test_result'], 'w')
