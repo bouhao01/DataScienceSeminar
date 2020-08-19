@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/282514069.svg)](https://zenodo.org/badge/latestdoi/282514069)
+
 ## Data science seminar: Incomplete network embedding II
 This project evaluates the effectiveness of three network embedding algorithms SINE, DeepWalk and Doc2Vec when the network presents different type of missing information namely:
 - removing random edges
