@@ -11,7 +11,7 @@ where importance is defined by centrality measures.
 Those algorithms will be used with three real-word data-sets: cora, citysee and dblp.
 The evaluation of low-dimensional representations will be done using simple node classification where we train a classifier on a part of the embedded representation and test its performance on the rest of the data.
 
-All experiments data-sets and performance results are availabe [here](https://gwunipassaude-my.sharepoint.com/personal/bouhao01_gw_uni-passau_de/_layouts/15/onedrive.aspx?originalPath=aHR0cHM6Ly9nd3VuaXBhc3NhdWRlLW15LnNoYXJlcG9pbnQuY29tLzpmOi9nL3BlcnNvbmFsL2JvdWhhbzAxX2d3X3VuaS1wYXNzYXVfZGUvRWwwaDJhdEpQS3RHbDloU21DSXQtUTBCd0VfR01lQS1HWVVrbHMwY3JweEtEZz9ydGltZT1lWE14cThCTjJFZw&id=%2Fpersonal%2Fbouhao01%5Fgw%5Funi%2Dpassau%5Fde%2FDocuments%2FData%20Science%20Seminar%20DataSets%20Embedding).
+All experiments data-sets and performance results are availabe [here](https://gwunipassaude-my.sharepoint.com/:f:/g/personal/bouhao01_gw_uni-passau_de/El0h2atJPKtGl9hSmCIt-Q0BwE_GMeA-GYUkls0crpxKDg?e=z1mjCi).
 
 The implementation is devided into two main parts:
   1. Embed the dataset using SINE, DeepWalk and Doc2Vec after removing a percentage of edges.
